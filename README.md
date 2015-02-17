@@ -8,3 +8,4 @@ MailMaster is a full stack struts2 application - complete Email Campaign Module 
 3. NoSQL DB to log the email status
 4. HTML5 - Bootstrap UI
 5. AngularJS for better readablity
+6. Amazon Web Service - Integrated with Amazon SES to send E-mails
