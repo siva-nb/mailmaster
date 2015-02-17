@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<package name="default" namespace="/" extends="struts-default,json-default">
+	
+		 <interceptors>
+            <interceptor name="authentication"
+                class="com.bliss.mailmaster.AuthenticationInterceptor"></interceptor>
+            <interceptor-stack name="authStack">
+                <interceptor-ref name="authentication"></interceptor-ref>
+                <interceptor-ref name="defaultStack"></interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+ 		 
+ 		<default-interceptor-ref name="authStack"></default-interceptor-ref>
+		
+		<global-results>
+    		<result name="login" type="redirect">index.jsp</result>
+		</global-results>
+
+		<action name="login" class="com.bliss.mailmaster.action.LoginAction" method="invokeLogin">
+			<interceptor-ref name="defaultStack"></interceptor-ref> 
+			<result name="SUCCESS" type="redirect">
+            	<param name="location">
+             		home.action
+            	</param >
+			</result>
+		</action>
+		
+		<action name="home" class="com.bliss.mailmaster.action.HomeAction" method="showDashboard">
+			<result name="SUCCESS">home.jsp</result>
+		</action>
+		
+		<action name="logout" class="com.bliss.mailmaster.action.LogoutAction" method="Logout">
+			<result name="SUCCESS">index.jsp</result>
+		</action>
+		
+		<action name="uploadcontacts" class="com.bliss.mailmaster.action.ContactsUploadAction" method="execute">
+			<result name="SUCCESS">home.jsp</result>
+		</action>
+		
+		<action name="managecontact" class="com.bliss.mailmaster.action.ContactsAction" method="invokeListContacts">
+			<result name="SUCCESS">listContacts.jsp</result>
+		</action>
+		
+		<action name="listcontacts" class="com.bliss.mailmaster.action.ListContactsAction" method="invokeListContacts">
+			<result type="json">jsonString</result>
+		</action>
+		
+		<action name="listcampaigns" class="com.bliss.mailmaster.action.ListCampaignAction" method="invokeListCampaign">
+			<result type="json">campaignService</result>
+		</action>
+		
+		<action name="createcampaign" class="com.bliss.mailmaster.action.CreateCampaignAction" method="invokeCreateCampaign">
+			<result name="SUCCESS">create_campaign.jsp</result>
+		</action>
+		
+		<action name="createnewcampaign" class="com.bliss.mailmaster.action.CreateCampaignAction" method="invokePostCampaign">
+			<result type="json">setJsonResponse</result>
+		</action>
+		
+		<action name="campaignasynctask" class="com.bliss.mailmaster.action.CampaignAsyncAction" method="invokeAsyncTask">
+			<result name="SUCCESS">index.jsp</result>
+		</action>
+		
+		<action name="sendemail" class="com.bliss.mailmaster.action.SendMailerAction" method="sendMail">
+			<result name="SUCCESS">index.jsp</result>
+		</action>
+		
+		<action name="welcome" class="com.bliss.mailmaster.action.WelcomeAction" method="invokeWelcome">
+			<result name="login">index.jsp</result>
+		</action>
+		
+		
+	</package>
+</struts>
